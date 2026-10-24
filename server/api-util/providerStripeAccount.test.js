@@ -43,6 +43,7 @@ describe('providerStripeAccountIdForCheckout', () => {
       id: expect.objectContaining({ uuid: LISTING_ID }),
       include: ['author'],
       'fields.listing': ['state'],
+      'fields.user': ['profile.displayName'],
     });
     expect(sdks.integrationSdk.users.show).toHaveBeenCalledWith({
       id: AUTHOR_ID,
