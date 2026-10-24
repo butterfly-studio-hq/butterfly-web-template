@@ -46,6 +46,7 @@ const dataLoader = require('./dataLoader');
 const { generateCSPNonce, csp } = require('./csp');
 const sdkUtils = require('./api-util/sdk');
 const { getSDKProxy } = require('./api-util/sdkCacheProxy');
+const { trustProxySetting } = require('./api-util/trustProxy');
 
 const buildPath = path.resolve(__dirname, '..', 'build');
 const dev = process.env.REACT_APP_ENV === 'development';
@@ -143,16 +144,15 @@ if (REDIRECT_SSL) {
 
 // Set the TRUST_PROXY when running the app behind a reverse proxy.
 //
-// For example, when running the app in Heroku, set TRUST_PROXY to `true`.
+// For example, when running the app in Heroku, set TRUST_PROXY to `1` (one proxy hop: the router).
+// `true` also works for HTTPS detection, but then the client chooses `req.ip` through
+// X-Forwarded-For, which defeats per-IP rate limits. See `api-util/trustProxy.js`.
 //
 // Read more: https://expressjs.com/en/guide/behind-proxies.html
 //
-if (TRUST_PROXY === 'true') {
-  app.enable('trust proxy');
-} else if (TRUST_PROXY === 'false') {
-  app.disable('trust proxy');
-} else if (TRUST_PROXY !== null) {
-  app.set('trust proxy', TRUST_PROXY);
+const trustProxy = trustProxySetting(TRUST_PROXY);
+if (trustProxy !== null) {
+  app.set('trust proxy', trustProxy);
 }
 
 app.use(compression());
