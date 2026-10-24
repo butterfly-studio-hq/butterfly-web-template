@@ -1,0 +1,104 @@
+/* Trigger — SecondaryButtonInline provides the button styling; drop its default top margin
+   so it sits flush in the host layout. */
+.trigger {
+  margin: 0;
+}
+
+/* Modal content — the Modal component's default container provides the card styling
+   (background, padding, border-radius, width); this only lays out the content. */
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modalTitle {
+  margin: 0;
+}
+
+/* Copy-link field + button */
+.copyRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.urlInput {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--colorGrey100);
+  border-radius: 4px;
+  background: var(--colorGrey50, var(--colorWhite));
+  color: var(--colorGrey700);
+  text-overflow: ellipsis;
+}
+
+/* Icon wrappers control size; the svg itself carries no width/height (see ./icons). */
+.icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Inline icon inside a text button (trigger, copy, native share) */
+.buttonIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Social targets */
+.shareOnLabel {
+  margin: 0;
+  color: var(--colorGrey500);
+}
+
+.targets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.targetButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--colorGrey700);
+}
+
+/* Circular chip that frames the icon */
+.targetIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--colorGrey50, var(--colorGrey100));
+  transition: var(--transitionStyleButton);
+}
+
+.targetGlyph {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.targetButton:hover .targetIcon {
+  background: var(--colorGrey100);
+}
+
+.targetName {
+  font-size: 13px;
+  color: var(--colorGrey500);
+}
