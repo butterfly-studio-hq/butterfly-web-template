@@ -50,6 +50,19 @@ describe('rateLimit', () => {
     expect(hit('198.51.100.1').next).toHaveBeenCalled();
   });
 
+  it('drops the oldest IP once maxKeys IPs are tracked', () => {
+    limiter = rateLimit({ windowMs: 60000, max: 2, maxKeys: 2, now: () => time });
+    hit('203.0.113.1');
+    hit('203.0.113.1');
+    hit('203.0.113.2');
+    hit('203.0.113.3');
+
+    // 203.0.113.1 was evicted, so it starts a new count; 203.0.113.3 is still tracked.
+    expect(hit('203.0.113.1').next).toHaveBeenCalled();
+    hit('203.0.113.3');
+    expect(hit('203.0.113.3').res.status).toHaveBeenCalledWith(429);
+  });
+
   it('starts a new window once the old one has passed', () => {
     hit();
     hit();

@@ -32,6 +32,7 @@ exports.providerStripeAccountIdForCheckout = ({ sdk, integrationSdk, listingId }
         id: new types.UUID(listingId),
         include: ['author'],
         'fields.listing': ['state'],
+        'fields.user': ['profile.displayName'],
       });
     })
     .then(listingResponse => {
