@@ -9,6 +9,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { deserialize } = require('./api-util/sdk');
+const { rateLimit } = require('./api-util/rateLimit');
 
 const initiateLoginAs = require('./api/initiate-login-as');
 const loginAs = require('./api/login-as');
@@ -57,7 +58,12 @@ router.post('/transaction-line-items', transactionLineItems);
 router.post('/initiate-privileged', initiatePrivileged);
 router.post('/transition-privileged', transitionPrivileged);
 router.post('/delete-account', deleteAccount);
-router.post('/stripe-account-for-listing', stripeAccountForListing);
+// Checkout calls this once per page load. The limit slows down enumerating sellers' Stripe accounts.
+router.post(
+  '/stripe-account-for-listing',
+  rateLimit({ windowMs: 15 * 60 * 1000, max: 30 }),
+  stripeAccountForListing
+);
 
 // Create user with identity provider (e.g. Facebook or Google)
 // This endpoint is called to create a new user after user has confirmed
